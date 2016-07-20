@@ -19,6 +19,20 @@ grad = zeros(size(theta));
 %
 % Note: grad should have the same dimensions as theta
 %
+hx = sigmoid(X*theta);
+for iter=1:m
+  if y(iter)==1
+    J=J+log(hx(iter));
+  else
+    J=J+log(1-hx(iter));
+  end  
+end
+%disp('J')
+J=(0-J)./m;
+%disp(J)
+for iter=1:size(theta)
+  grad(iter)=sum((hx-y).*X(:,iter))/m;
+end
 
 
 
