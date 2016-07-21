@@ -28,7 +28,7 @@ m = size(X, 1);
 % You need to return the following variables correctly 
 J = 0;
 Theta1_grad = zeros(size(Theta1));
-Theta2_grad = zeros(size(Theta2));
+Theta2_grad = ones(size(Theta2));
 
 % ====================== YOUR CODE HERE ======================
 % Instructions: You should complete the code by working through the
@@ -61,14 +61,41 @@ Theta2_grad = zeros(size(Theta2));
 %               the regularization separately and then add them to Theta1_grad
 %               and Theta2_grad from Part 2.
 %
+X = [ones(m,1) X];
+%disp(size(Theta1))
+tmp = sigmoid(X*Theta1');
+tmp = [ones(m,1) tmp];
+hx = sigmoid(tmp*Theta2');
+for c = 1:num_labels
+  tmp_y = (y==c);
+  J = J- sum( tmp_y.*log(hx(:,c))+(1-tmp_y).*log(1-hx(:,c)) );
+end
+J = J/m;
+
+
+
+delta3=zeros(size(hx));
+for c = 1:num_labels
+  delta3(:,c) = hx(:,c) - (y==c);
+end
+%delta2=(Theta2(:,2:end)'* delta3')'.*sigmoidGradient(X*Theta1');
+delta2=(Theta2(:,2:end)'* delta3')'.*sigmoidGradient(X*Theta1');
+
+Theta2_grad = delta3' * ([ones(m,1) sigmoid(X*Theta1') ]);
+Theta1_grad = delta2' * X;
+%disp(size(Theta1_grad));
+%disp(size(Theta2_grad));
+Theta2_grad = Theta2_grad./m;
+Theta1_grad = Theta1_grad./m;
 
 
 
 
-
-
-
-
+Theta1(:,1)= Theta1(:,1).*0;
+Theta2(:,1)= Theta2(:,1).*0;
+J = J + (lambda/(2*m))*( sum(sum(Theta1.*Theta1))+ sum(sum(Theta2.*Theta2)) );
+Theta2_grad=Theta2_grad+ lambda/m*Theta2;
+Theta1_grad=Theta1_grad+ lambda/m*Theta1;
 
 
 
