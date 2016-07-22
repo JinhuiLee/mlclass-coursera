@@ -15,7 +15,9 @@ sim = 0;
 %               sigma
 %
 %
-
+t = x1-x2;
+t = sum(t.*t);
+sim = exp(-1* t / (2*sigma*sigma));
 
 
 
