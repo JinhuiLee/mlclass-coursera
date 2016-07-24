@@ -20,7 +20,13 @@ idx = zeros(size(X,1), 1);
 %
 % Note: You can use a for-loop over the examples to compute this.
 %
-
+for i=1:size(X,1)
+    t = X(i,:)-centroids;
+    t = t.*t;
+    t = sum(t,2);
+    [~,index] = min(t);
+    idx(i,:)=index;
+end
 
 
 

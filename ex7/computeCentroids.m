@@ -25,7 +25,22 @@ centroids = zeros(K, n);
 %
 % Note: You can use a for-loop over the centroids to compute this.
 %
-
+for i=1:K
+  t = (idx==i);
+  num = sum(t);
+  if num>0
+  t_idx = [];
+  for j=1:size(X,2)
+    t_idx = [t_idx t];
+  end
+  t_X = X.*t_idx;
+  %disp('mean')
+  disp(K);
+  disp(num);
+  centroids(i,:) = sum(t_X)/num;
+  endif
+  
+end
 
 
 
